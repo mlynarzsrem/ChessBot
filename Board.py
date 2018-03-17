@@ -27,7 +27,7 @@ class Board:
         self.board[7, 0]=Rook(False,7,0);self.board[7, 7] =Rook(False,7,7)
         self.board[7, 1]=Knight(False,7,1);self.board[7, 6] =Knight(False,7,6)
         self.board[7, 2] = Bishop(False,7,2);self.board[7, 5] = Bishop(False,7,5)
-        self.board[7, 4] = Queen(False,7,4); self.board[7, 3] = King(False,7,3)
+        self.board[7, 3] = Queen(False,7,3); self.board[7, 4] = King(False,7,4)
 
     def getState(self):
         cpuState = sum([abs(x.getId())for x in self.destroyed['CPU']])

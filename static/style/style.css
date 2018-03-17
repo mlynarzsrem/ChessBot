@@ -1,0 +1,79 @@
+body {
+  background-color: #fff2e6; }
+
+.header {
+  width: 100%;
+  margin-bottom: 60px;
+  border-bottom: 5px solid;
+  border-color: #825c1f; }
+  .header .header_title {
+    font-family: 'Berkshire Swash', cursive;
+    margin-top: 60px;
+    text-align: center;
+    padding-bottom: 40px;
+    font-size: 60px;
+    color: #825c1f; }
+
+#board {
+  width: 800px;
+  height: 800px;
+  border-style: solid;
+  border-width: 5px;
+  margin-left: auto;
+  margin-right: auto; }
+  #board .field_normal, #board .field_black, #board .field_white {
+    width: 100px;
+    height: 100px;
+    float: left;
+    text-align: center; }
+  #board .field_active, #board .field_black_toclick, #board .field_white_toclick, #board .field_black_active, #board .field_white_active {
+    width: 90px;
+    height: 90px;
+    float: left;
+    text-align: center;
+    border-style: solid;
+    border-width: 5px; }
+  #board .field_black {
+    background-color: #825c1f; }
+  #board .field_white {
+    background-color: #efeabf; }
+  #board .field_black_toclick {
+    background-color: #825c1f;
+    border-color: green; }
+  #board .field_white_toclick {
+    background-color: #efeabf;
+    border-color: green; }
+  #board .field_black_active {
+    background-color: #825c1f;
+    border-color: red; }
+  #board .field_white_active {
+    background-color: #efeabf;
+    border-color: red; }
+
+button {
+  padding: 10px;
+  font-size: 60px;
+  margin-top: 60px;
+  margin-left: 35%;
+  margin-right: 35%;
+  margin-bottom: 60px;
+  width: 30%;
+  color: red; }
+
+button:focus {
+  color: green; }
+
+button:hover {
+  color: green; }
+
+.footer {
+  width: 100%;
+  font-size: 20px;
+  text-align: center;
+  padding: 30px;
+  border-top: 5px solid;
+  border-color: #825c1f;
+  color: #825c1f; }
+
+/*# sourceMappingURL=style.css.map */
+

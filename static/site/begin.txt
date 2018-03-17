@@ -1,4 +1,4 @@
-<!doctype html>
+ł<!doctype html>
 <html>
      <head>
           <title>ChessBot 1.0</title>          
@@ -6,7 +6,7 @@
           <meta charset="UTF-8" />
           <meta name="description" content="Algorytm szachowy oparty na sztucznej inteligencji" />
           <meta name="keywords" content="chessBot, szachy,sztuczna inteligencja, machine learning" />
-          <meta name="author" content="Jakub M�ynarz" /> 
+          <meta name="author" content="Jakub Młynarz" /> 
           <!-- link tagi !-->
           <link rel="stylesheet" href="{{ url_for('static', filename='style/style.css')}}" />
           <link href="https://fonts.googleapis.com/css?family=Berkshire+Swash" rel="stylesheet">

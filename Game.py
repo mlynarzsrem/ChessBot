@@ -3,7 +3,7 @@ from GradedMove import *
 from NeuralNetwork import *
 import numpy as np
 import datetime
-
+import math
 class Game:
     def __init__(self):
         self.board = Board()
@@ -14,7 +14,7 @@ class Game:
     def updateTrainigDataRanks(self,value):
         n = len(self.trainigData)
         for i in range(len(self.trainigData)):
-            self.trainigData[i].updateRank(float(value)/n)
+            self.trainigData[i].updateRank(float(value)/math.sqrt(n))
             n-=1
 
     def addNewTrainigData(self,newGradedMove):
@@ -118,3 +118,5 @@ class Game:
                 self.gameOver(CPUwon=True)
                 return True ,1
         return False ,0
+x = Game()
+x.computerMove()

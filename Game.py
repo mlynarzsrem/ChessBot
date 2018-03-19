@@ -4,12 +4,16 @@ from NeuralNetwork import *
 import numpy as np
 import datetime
 import math
+import random
+
+import time
 class Game:
-    def __init__(self):
+    def __init__(self,tm=True):
         self.board = Board()
         self.cCPUState, self.cPlState = self.board.getState()
         self.trainigData = []
         self.neuralNetwork = NeuralNetwork()
+        self.trainMode = tm
 
     def updateTrainigDataRanks(self,value):
         n = len(self.trainigData)
@@ -18,24 +22,25 @@ class Game:
             n-=1
 
     def addNewTrainigData(self,newGradedMove):
-        self.updateTrainigDataRanks(newGradedMove.getRank())
-        self.trainigData.append(newGradedMove)
-        if(len(self.trainigData)==5):
-            toTrain = self.trainigData.pop(0)
-            move,mProb =toTrain.getTrainingData()
-            move = move.reshape(1,move.shape[0])
-            self.neuralNetwork.train(move,[mProb])
+        if(self.trainMode ==True):
+            self.updateTrainigDataRanks(newGradedMove.getRank())
+            self.trainigData.append(newGradedMove)
+            if(len(self.trainigData)==5):
+                toTrain = self.trainigData.pop(0)
+                move,mProb =toTrain.getTrainingData()
+                move = move.reshape(1,move.shape[0])
+                self.neuralNetwork.train(move,[mProb])
     #Train NN with rest of training examples
     def gameOver(self,CPUwon):
-        if(CPUwon==True):
-            self.updateTrainigDataRanks(100)
-        else:
-            self.updateTrainigDataRanks(-100)
-        for toTrain in self.trainigData:
-            move,mProb =toTrain.getTrainingData()
-            print(mProb)
-            move = move.reshape(1,move.shape[0])
-            self.neuralNetwork.train(move,np.array([mProb]))
+        if(self.trainMode ==True):
+            if(CPUwon==True):
+                self.updateTrainigDataRanks(100)
+            else:
+                self.updateTrainigDataRanks(-100)
+            for toTrain in self.trainigData:
+                move,mProb =toTrain.getTrainingData()
+                move = move.reshape(1,move.shape[0])
+                self.neuralNetwork.train(move,np.array([mProb]))
 
     #Analyze all moves and choose the best
     def analyzeMoves(self,moveList):
@@ -47,26 +52,33 @@ class Game:
             m = m.reshape(1,m.shape[0])
             probs.append(self.neuralNetwork.getPredition(m))
         #Find best move
-        x = np.argmax(probs)
+        if(self.trainMode ==True):
+            x = random.randint(0,len(probs)-1)
+        else:
+            x =np.argmax(probs)
+        #print(probs)
+        #print(moves[x][-4:])
+        #print(probs[x])
         return moves[x],probs[x]
 
     def updateGameLog(self,WHOwon):
-        if(WHOwon==1):
-            winner ='COMPUTER'
-        if (WHOwon == -1):
-            winner='PLAYER'
-        if (WHOwon == 0):
-            winner='DRAW'
-        now = datetime.datetime.now()
-        text ='\nWinner '+winner+' Date: '+str(now.strftime("%Y-%m-%d %H:%M"))
-        text+=' Player state: '+str(self.cPlState)+' Computer state: '+str(self.cCPUState)+' Liczba ruchów: '+str(self.board.moveCount)+'\n'
-        text+='-----------------------------------------------------------------------------\n'
-        with open("logs/GameLog.txt", "a") as myfile:
-            myfile.write(text)
-        text =winner+' ; '+str(now.strftime("%Y-%m-%d %H:%M"))
-        text+=' ; '+str(self.cPlState)+' ; '+str(self.cCPUState)+'; '+str(self.board.moveCount)+';\n'
-        with open("logs/GameLog.csv", "a") as myfile2:
-            myfile2.write(text)
+        if(self.trainMode ==False):
+            if(WHOwon==1):
+                winner ='COMPUTER'
+            if (WHOwon == -1):
+                winner='PLAYER'
+            if (WHOwon == 0):
+                winner='DRAW'
+            now = datetime.datetime.now()
+            text ='\nWinner '+winner+' Date: '+str(now.strftime("%Y-%m-%d %H:%M"))
+            text+=' Player state: '+str(self.cPlState)+' Computer state: '+str(self.cCPUState)+' Liczba ruchów: '+str(self.board.moveCount)+'\n'
+            text+='-----------------------------------------------------------------------------\n'
+            with open("/home/mlynarzsrem/mysite/logs/GameLog.txt", "a") as myfile:
+                myfile.write(text)
+            text =winner+' ; '+str(now.strftime("%Y-%m-%d %H:%M"))
+            text+=' ; '+str(self.cPlState)+' ; '+str(self.cCPUState)+'; '+str(self.board.moveCount)+';\n'
+            with open("/home/mlynarzsrem/mysite/logs/GameLog.csv", "a") as myfile2:
+                myfile2.write(text)
     #Create 1D array to input it into the neural network
     def convertMoveData(self,move):
         finalList = []
@@ -118,5 +130,22 @@ class Game:
                 self.gameOver(CPUwon=True)
                 return True ,1
         return False ,0
+
+    def traingGame(self):
+        endgame =False
+        while(endgame==False):
+            moves = self.board.getValidCheckStateMoves(False)
+            if(moves is None or len(moves)==0):
+                state =0
+                break
+            x = random.randint(0, len(moves) - 1)
+            self.board.doMove(moves[x],False)
+            endgame,state = self.computerMove()
+        return state
+
 x = Game()
-x.computerMove()
+
+timeout = 3600 * 2
+timeout_start = time.time()
+while time.time() < timeout_start + timeout:
+    x.traingGame()

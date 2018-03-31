@@ -5,6 +5,7 @@ import numpy as np
 import datetime
 import math
 import random
+from State import State
 
 import time
 class Game:
@@ -27,9 +28,8 @@ class Game:
             self.trainigData.append(newGradedMove)
             if(len(self.trainigData)==5):
                 toTrain = self.trainigData.pop(0)
-                move,mProb =toTrain.getTrainingData()
-                move = move.reshape(1,move.shape[0])
-                self.neuralNetwork.train(move,[mProb])
+                state,mProb =toTrain.getTrainingData()
+                self.neuralNetwork.train(state,[mProb])
     #Train NN with rest of training examples
     def gameOver(self,CPUwon):
         if(self.trainMode ==True):
@@ -38,28 +38,24 @@ class Game:
             else:
                 self.updateTrainigDataRanks(-100)
             for toTrain in self.trainigData:
-                move,mProb =toTrain.getTrainingData()
-                move = move.reshape(1,move.shape[0])
-                self.neuralNetwork.train(move,np.array([mProb]))
+                state,mProb =toTrain.getTrainingData()
+                self.neuralNetwork.train(state,np.array([mProb]))
 
     #Analyze all moves and choose the best
     def analyzeMoves(self,moveList):
         probs = [] #List with rates of each moves
-        moves = [] #List of all valid moves
+        states = [] #List of all valid moves
         for m in moveList:
-            moves.append(self.convertMoveData(m))
-        for m in moves:
-            m = m.reshape(1,m.shape[0])
-            probs.append(self.neuralNetwork.getPredition(m))
+            state = self.convertMoveData(m)
+            move = m
+            states.append(State(move,state))
+        for s in states:
+            state =s.getState()
+            probs.append(self.neuralNetwork.getPredition(state))
         #Find best move
-        if(self.trainMode ==True):
-            x = random.randint(0,len(probs)-1)
-        else:
-            x =np.argmax(probs)
-        #print(probs)
-        #print(moves[x][-4:])
-        #print(probs[x])
-        return moves[x],probs[x]
+        x =np.argmax(probs)
+        print(probs)
+        return states[x],probs[x]
 
     def updateGameLog(self,WHOwon):
         if(self.trainMode ==False):
@@ -81,15 +77,9 @@ class Game:
                 myfile2.write(text)
     #Create 1D array to input it into the neural network
     def convertMoveData(self,move):
-        finalList = []
-        intBoard = self.board.getIntBoard()
-        for row in intBoard:
-            for x in row:
-                finalList.append(x)
-        for x in move:
-            finalList.append(x)
-        return np.asarray(finalList)
-
+        state =  self.board.getStateAfterMove(move=move,CPU=True)
+        arr = np.asarray(state)
+        return arr
     #Retruns diffrences between prievious and current game state
     def updateGameState(self):
         cpuState, playerState = self.board.getState()
@@ -118,34 +108,17 @@ class Game:
             self.updateTrainigDataRanks(-30)
             return True, 0
         # Get best move and execute it
-        move, prob = self.analyzeMoves(moveList)
-        self.board.doMove(move[-4:],CPU=True)
+        state, prob = self.analyzeMoves(moveList)
+        self.board.doMove(state.getMove(),CPU=True)
         #Updaet game state
         gain, cost = self.updateGameState()
         #Create grade move
-        self.addNewTrainigData(GradedMove(move,prob,gain))
+        self.addNewTrainigData(GradedMove(state.getState(),prob,gain))
         if (self.board.isKingChecked(CPU=False) == True):
             self.updateTrainigDataRanks(value=10)
             if(self.board.isLooser(CPU=False)):
                 self.gameOver(CPUwon=True)
                 return True ,1
         return False ,0
-
-    def traingGame(self):
-        endgame =False
-        while(endgame==False):
-            moves = self.board.getValidCheckStateMoves(False)
-            if(moves is None or len(moves)==0):
-                state =0
-                break
-            x = random.randint(0, len(moves) - 1)
-            self.board.doMove(moves[x],False)
-            endgame,state = self.computerMove()
-        return state
-
 x = Game()
-
-timeout = 3600 * 2
-timeout_start = time.time()
-while time.time() < timeout_start + timeout:
-    x.traingGame()
+x.computerMove()

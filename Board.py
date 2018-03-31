@@ -64,7 +64,12 @@ class Board:
             return True
         else:
             return False
-
+    def getStateAfterMove(self,move,CPU):
+        bTest = Board()
+        bTest.board=self.board.copy()
+        bTest.doMove(move,CPU)
+        return bTest.getIntBoard()
+        
     #Returns true if after this move player's King is checked
     def testMove(self,move,CPU):
         bTest = Board()

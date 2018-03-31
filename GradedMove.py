@@ -7,7 +7,7 @@ class GradedMove:
         self.rank+=toAdd
     def getTrainingData(self):
         finalProb=self.prob+(float(self.rank)/100)
-        finalProb = min(1,max(0,finalProb))
+        finalProb = min(1,max(-1,finalProb))
         return self.move,finalProb
     def getRank(self):
         return self.rank

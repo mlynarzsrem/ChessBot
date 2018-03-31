@@ -1,6 +1,6 @@
 import tensorflow as tf
 from keras.models import Sequential
-from keras.layers import Dense, Dropout
+from keras.layers import Dense, Dropout,Flatten
 from keras.models import load_model
 import os.path
 tf.logging.set_verbosity(tf.logging.ERROR)
@@ -11,7 +11,8 @@ class NeuralNetwork:
             self.model =load_model(self.mName)
         else:
             self.model = Sequential()
-            self.model.add(Dense(units=500, activation='sigmoid', input_dim=68))
+            self.model.add(Dense(units=500, activation='sigmoid', input_shape=(8,8)))
+            self.model.add(Flatten())
             self.model.add(Dropout(0.15))
             #hidden layers
             for i in range(hiddenLayersNumber):
@@ -21,9 +22,11 @@ class NeuralNetwork:
             self.model.compile(loss='binary_crossentropy', optimizer='sgd', metrics=['accuracy'])
         self.saveModel()
     def getPredition(self,X):
+        X =X.reshape((1,8,8))
         return self.model.predict(X,batch_size=1)
     def train(self,X,Y,epochs=20,bs=1):
         try:
+            X = X.reshape((1, 8, 8))
             self.model.fit(X,Y,batch_size=bs,epochs=epochs,verbose=2)
         except:
             print("Error neural")

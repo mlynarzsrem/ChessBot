@@ -108,8 +108,32 @@ class Board:
                             moveList += self.board[i, j].getMoves(self,reCallable)
         return moveList
 
+    def isCastling(self,move):
+        x0 = move[0];y0 = move[1]; x1 = move[2];y1 = move[3]
+        if(self.board[x0,y0] is not None and abs(self.board[x0,y0].getId())==KingValue):
+            if(abs(y0-y1)!=1):
+                #Move king
+                self.board[x1, y1] = copy.copy(self.board[x0, y0])
+                self.board[x1, y1].setPosition(x1, y1)
+                self.board[x0, y0] = None
+                np.delete(self.board, [x0, x1])
+                if(y1 == 1):
+                    rookS  = 0; rookE =2
+                if (y1 == 6):
+                    rookS = 7;rookE = 5
+                self.board[x1, rookE] = copy.copy(self.board[x1, rookS])
+                self.board[x1, rookE].setPosition(x1,rookE)
+                self.board[x1, rookS] = None
+                np.delete(self.board, [x1, rookS])
+                return True
+            else:
+                return False
+        else:
+            return False
     #param - move tuple(x0,y0,x1,y1)
     def doMove(self,move,CPU):
+        if(self.isCastling(move)==True):
+            return None
         x0=move[0];y0=move[1];x1=move[2];y1=move[3]
         if(self.board[x1,y1] is not None):
             dPiece = copy.copy(self.board[x1,y1])
@@ -127,3 +151,9 @@ class Board:
         self.whMove= not self.whMove
         self.moveCount +=1
 
+b =Board()
+print(b.getIntBoard())
+b.board[0,5] = None
+b.board[0,6] = None
+print(b.getIntBoard())
+print(b.board[0,4].getMoves(b,False))

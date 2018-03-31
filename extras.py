@@ -1,4 +1,11 @@
-
+def isIn(arg,target):
+    if(target is None):
+        return False
+    else:
+        if(arg in target):
+            return True
+        else:
+            return False
 def inRange(posX, posY):
     cond1 = (posX>=0 and posX<8)
     cond2 = (posY >= 0 and posY < 8)

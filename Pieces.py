@@ -144,4 +144,32 @@ class King(Piece):
                     #check if it borders with enemy king
                     if(borders(board,X2,Y2,self.getId()*-1)==False):
                         movesList.append((X, Y, X2, Y2))
+        castling = self.checkCastlingPosiblity(board,dangerousCords)
+        if(castling is not None):
+            movesList = movesList+ castling
         return movesList
+    def checkCastlingPosiblity(self,board,dangerousCords):
+        moves = []
+        if(self.getId()>0):
+            startX =0
+        else:
+            startX = 7
+        if(self.posX != startX or self.posY !=4 or isIn((startX,6) ,dangerousCords)):
+            return None
+        if(abs(board[startX,7])==RookValue):
+            ispos =True
+            for i in range(5,7):
+                if(board[startX,i]!=0 or isIn((startX,6) ,dangerousCords)):
+                    ispos = False
+                    break
+            if(ispos ==True and isIn((startX,6) ,dangerousCords)==False):
+                moves.append((startX, self.posY, startX, 6))
+        if (abs(board[startX, 0]) == RookValue):
+            ispos = True
+            for i in range(1,4):
+                if(board[startX,i]!=0 or isIn((startX,6) ,dangerousCords)):
+                    ispos = False
+                    break
+            if(ispos ==True and isIn((startX,6) ,dangerousCords) ==False):
+                moves.append((startX,self.posY,startX,1))
+        return moves

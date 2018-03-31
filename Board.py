@@ -119,7 +119,7 @@ class Board:
                 np.delete(self.board, [x0, x1])
                 if(y1 == 1):
                     rookS  = 0; rookE =2
-                if (y1 == 6):
+                else:
                     rookS = 7;rookE = 5
                 self.board[x1, rookE] = copy.copy(self.board[x1, rookS])
                 self.board[x1, rookE].setPosition(x1,rookE)

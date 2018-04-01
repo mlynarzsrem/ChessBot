@@ -14,6 +14,7 @@ class Piece:
         self.posY=posY #PositionY - column
         self.value=0
         self.CPU=CPU
+        self.isMoved = False
     #Returns piece value if it's computer's piece else return piece value multiplied by -1
     def getId(self):
         if(self.CPU==True):
@@ -24,6 +25,7 @@ class Piece:
     def setPosition(self,posX,posY):
         self.posX=posX
         self.posY=posY
+        self.isMoved = True
     #Return current postion (tuple (posX,posY))
     def getPosition(self):
         return self.posX,self.posY
@@ -144,11 +146,14 @@ class King(Piece):
                     #check if it borders with enemy king
                     if(borders(board,X2,Y2,self.getId()*-1)==False):
                         movesList.append((X, Y, X2, Y2))
-        castling = self.checkCastlingPosiblity(board,dangerousCords)
+        castling = self.checkCastlingPosiblity(gameBoard,dangerousCords)
         if(castling is not None):
             movesList = movesList+ castling
         return movesList
-    def checkCastlingPosiblity(self,board,dangerousCords):
+    def checkCastlingPosiblity(self,gameBoard,dangerousCords):
+        if(self.isMoved==True):
+            return None
+        board = gameBoard.getIntBoard()
         moves = []
         if(self.getId()>0):
             startX =0
@@ -156,20 +161,20 @@ class King(Piece):
             startX = 7
         if(self.posX != startX or self.posY !=4 or isIn((startX,6) ,dangerousCords)):
             return None
-        if(abs(board[startX,7])==RookValue):
+        if(abs(board[startX,7])==RookValue and gameBoard.board[startX,7].isMoved ==False):
             ispos =True
             for i in range(5,7):
-                if(board[startX,i]!=0 or isIn((startX,6) ,dangerousCords)):
+                if(board[startX,i]!=0 or isIn((startX,i) ,dangerousCords)):
                     ispos = False
                     break
             if(ispos ==True and isIn((startX,6) ,dangerousCords)==False):
                 moves.append((startX, self.posY, startX, 6))
-        if (abs(board[startX, 0]) == RookValue):
+        if (abs(board[startX, 0]) == RookValue and gameBoard.board[startX,0].isMoved ==False):
             ispos = True
-            for i in range(1,4):
-                if(board[startX,i]!=0 or isIn((startX,6) ,dangerousCords)):
+            for i in range(2,4):
+                if(board[startX,i]!=0 or isIn((startX,i) ,dangerousCords)):
                     ispos = False
                     break
-            if(ispos ==True and isIn((startX,6) ,dangerousCords) ==False):
-                moves.append((startX,self.posY,startX,1))
+            if(ispos ==True and isIn((startX,2) ,dangerousCords) ==False):
+                moves.append((startX,self.posY,startX,2))
         return moves

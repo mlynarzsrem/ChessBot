@@ -13,7 +13,7 @@ hundreds or even thousands it's rather about milions.
 ### So, how is it work?
 
 Well... Actually it is not working at all. I encountered a problem which
- observation of its short-term effectsI think results from wrong way of data's representation. But It's my
+I think results from wrong way of data's representation. But It's my
 first machine learning project and I hope that I will find the issue and
 I fix it someday.
 

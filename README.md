@@ -2,7 +2,7 @@
 
 ##  About project
 
-#### Project's idea
+### Project's idea
 
 ChessBot 1.0 is self-learning chess algorithm written in Python. The idea
 of project is to learn neural network to play a chess by playing against a
@@ -10,14 +10,14 @@ human. Technically it is very difficult to achieve because neural network
 has to play many games to how to play properly, and "many" doesn't mean
 hundreds or even thousands it's rather about milions.
 
-#### So, how is it work?
+### So, how is it work?
 
 Well... Actually it is not working at all. I encountered a problem which
  observation of its short-term effectsI think results from wrong way of data's representation. But It's my
 first machine learning project and I hope that I will find the issue and
 I fix it someday.
 
-#### How it should work?
+### How it should work?
 
 ###### 1. Data's representation
 
@@ -67,7 +67,7 @@ penalties:
 * Draw - 30/-30
 * Checkmate - 100/-100
 
-#### Used libraries
+### Used libraries
 
 In this project I have used following machine learning libraries:
 

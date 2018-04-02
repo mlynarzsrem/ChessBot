@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>ChessBot 1.0 - Chess game powerd by Artificial Intelligence</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{ url_for('static', filename='bootstrap/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+
+    <!-- Custom fonts for this template -->
+    <link href="{{ url_for('static', filename='bootstrap/vendor/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+
+    <!-- Plugin CSS -->
+    <link href="{{ url_for('static', filename='vendor/magnific-popup/magnific-popup.css')}}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for('static', filename='bootstrap/css/creative.min.css')}}" rel="stylesheet">
+
+  </head>
+
+  <body id="page-top">
+
+
+    <header class="masthead text-center text-white d-flex">
+      <div class="container my-auto">
+        <div class="row">
+          <div class="col-lg-10 mx-auto">
+            <h1 >
+              <strong><span style="color: #3366ff">ChessBot 1.0 <br> Zagraj w szachy ze sztuczną inteligencją! </span></strong>
+            </h1>
+            <hr style="border-color: #3366ff;">
+          </div>
+          <div class="col-lg-8 mx-auto">
+            <a class="btn btn-primary btn-xl js-scroll-trigger" href="#about">O projekcie</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="bg-primary" id="about">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 mx-auto text-center">
+            <h2 class="section-heading text-white">O projekcie</h2>
+            <hr class="light my-4">
+            <p class="text-faded mb-4">ChessBot 1.0 to szachowa gra przeglądarkowa. W odróżnieniu od innych gier tego typu komputer nie podejmuje decyzji o ruchu na 
+            podstawie skomplikowanego algorytmu, ale sieci neuronowej. Sieć neuronowa nie jest uczona jednak na podstawie jakiś danych historycznych, w postaci zapisów
+            z gier rozegranych przez wielkich szachistów. Algorytm uczy się na bieżąco przez analizowanie swoich ruchów z gier z człowiekiem. Jest to o wiele trudniejszy 
+            i mniej precyzyjny sposób uczenia, ponieważ sieć neuronowa uczy się na podstawie gier z graczami, którzy niekoniecznie muszą być dobrymi szachistami. Mam nadzieję, 
+            że po rozegraniu odpowiedniej ilości gier, algorytm zacznie robić ruchy lepsze niż losowe, jak to ma miejsce przy nie wytrenowanej sieci. Jest to mój pierwszy
+            projekt jeśli chodzi o uczenie maszynowe, jak również pierwsza napisana przez mnie aplikacja webowa. W przypadku zauważenia jakichkolwiek błędów w działaniu
+            proszę o kontakt na maila podanego na dole strony.</p>
+            <a class="btn btn-light btn-xl js-scroll-trigger" href="#learning_strategy">Więcej</a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="technology">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4 col-md-6 text-center">
+            <div class="service-box mt-5 mx-auto">
+              <a href="https://www.python.org"><img class="fa fa-4x text-primary mb-3 sr-icons" src="{{ url_for('static', filename='bootstrap/img/python.ico')}}" width="70px"></img></a>
+              <h3 class="mb-3">Python</h3>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 text-center">
+            <div class="service-box mt-5 mx-auto">
+              <a href="https://www.tensorflow.org/"><img class="fa fa-4x text-primary mb-3 sr-icons" src="{{ url_for('static', filename='bootstrap/img/tensorflow.png')}}" width="70px;"></img></a>
+              <h3 class="mb-3">Tensorflow</h3>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 text-center">
+            <div class="service-box mt-5 mx-auto">
+              <a href="https://keras.io/"><img class="fa fa-4x text-primary mb-3 sr-icons" src="{{ url_for('static', filename='bootstrap/img/keras.jpg')}}" height="70px;"></img></a>
+              <h3 class="mb-3">Keras</h3>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </section>
+ 
+    
+        <section class="bg-primary" id="learning_strategy">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 mx-auto text-center">
+            <h2 class="section-heading text-white">Strategia uczenia</h2>
+            <hr class="light my-4">
+            <p class="text-faded mb-4">Wybranie odpowiedniej strategii uczenia siecie neuronowej, było kluczową decyzją dla jej przyszłego rozwoju i jednocześnie bardzo problematyczną. Jak już napisałem algorytm uczy się analizując swoje ruchy, czyli monitorując ich wpływ na przebieg gry. Jednak tu pojawia się problem. Jak ocenić czy ruch przyniósł korzyści? Każdy kto chociaż raz grał w szachy z pewnością rozumie, że zbicie figury przeciwnika w swoim ruchu to jeszcze za mało, żeby stwierdzić czy ruch był udany. Co z tego jeśli teraz zbijemy komuś hetmana, jeśli ta decyzja przyczyni się do naszej porażki w którymś z następnych ruchów. Żeby dobrze ocenić nasze posunięcie potrzebna jest znajomość szerszego kontekstu.  <br><br>Zdecydowałem, że w moim algorytmi ocena ruchu będzie dokonywana na podstawie skutków pięciu następnych ruchów wybranych przez algorytm. Po wykonaniu ruchu, zapisywnay jest on do kolejki przechowującej poprzednie ruchy, jego ocena początkowa to wartość zbitej figury 
+            lub zero gdy żadna nie została zbita. Kolejne ruchy wykonane przez komputer i gracza wpływają na ocene końcową tego ruchu, jednak wraz z ilością wykonanych ruchów ten wpływ jest coraz mniejszy. Po wykonaniu czterech następnych ruchów ocena pierwszego ruchu wygenerowana przez sieć jest modyfikowana na podstawie jego oceny końcowej. 
+            Zmodyfikowana ocena jest wykorzystana przy trenowaniu sieci neuronowej.</p>
+            <a class="btn btn-light btn-xl js-scroll-trigger" href="#playNow">Zagraj teraz</a>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+      <section id="socials">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-6 col-md-6 text-center">
+            <div class="service-box mt-5 mx-auto">
+              <a href="https://github.com/mlynarzsrem"><i class="fa fa-4x fa fa-github text-primary mb-3 sr-icons" style="color: black!important;" ></i><a/>
+              <h3 class="mb-3">Github</h3>
+              <p class="text-muted mb-0"></p>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 text-center">
+            <div class="service-box mt-5 mx-auto">
+              <a href="https://www.youtube.com/channel/UCq4Lx6f7STdJcZkpJAb3kVA"><i class="fa fa-4x fa fa-youtube text-primary mb-3 sr-icons" style="color: #d02525!important;"></i></a>
+              <h3 class="mb-3">YouTube</h3>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="bg-dark text-white" id="playNow">
+      <div class="container text-center">
+        <h2 class="mb-4">Zmierz się w grze szachowej ze sztuczną inteligencją!</h2>
+        <a class="btn btn-light btn-xl sr-button" href="{{ url_for('create_new_game')}}">Zagraj teraz!</a>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 mx-auto text-center">
+            <h2 class="section-heading">Kontakt</h2>
+            <hr class="my-4" style="border-color: #3366ff;">
+            <p class="mb-5">W przypadku wykrycia jakiś błędów w grze lub chęci zadania pytań dotyczących działania algorytmu proszę o kontakt na poniższy adress e-mail. </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-4 mr-auto text-center" style="margin-left: auto;">
+            <i class="fa fa-envelope-o fa-3x mb-3 sr-contact"></i>
+            <p>
+              <a href="mailto:mlynarzsrem@gmail.com" style="color: #3366ff;">mlynarzsrem@gmail.com</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="{{ url_for('static', filename='/bootstrapvendor/jquery/jquery.min.js')}}"></script>
+    <script src="bootstrap/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="{{ url_for('static', filename='bootstrap/vendor/jquery-easing/jquery.easing.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='bootstrap/vendor/scrollreveal/scrollreveal.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='bootstrap/vendor/magnific-popup/jquery.magnific-popup.min.js')}}"></script>
+
+    <!-- Custom scripts for this template -->
+    <script src="{{ url_for('static', filename='bootstrap/js/creative.min.js')}}"></script>
+
+  </body>
+
+</html>

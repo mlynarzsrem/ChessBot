@@ -1,0 +1,6 @@
+        </div>
+
+        <button type="button" onclick="window.location='{{ url_for('giveUp')}}'">Give up!</button>
+        <div class="footer">Created by Jakub Młynarz</div>
+     </body>
+</html>

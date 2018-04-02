@@ -1,0 +1,25 @@
+ł<!doctype html>
+<html>
+     <head>
+          <title>ChessBot 1.0</title>          
+          <!-- meta tagi !-->
+          <meta charset="UTF-8" />
+          <meta name="description" content="Algorytm szachowy oparty na sztucznej inteligencji" />
+          <meta name="keywords" content="chessBot, szachy,sztuczna inteligencja, machine learning" />
+          <meta name="author" content="Jakub Młynarz" /> 
+          <!-- link tagi !-->
+          <link rel="stylesheet" href="{{ url_for('static', filename='style/style.css')}}" />
+          <link href="https://fonts.googleapis.com/css?family=Berkshire+Swash" rel="stylesheet">
+          <script>
+          function scroll() {             
+          var elmnt = document.getElementById("ph");
+          elmnt.scrollIntoView();
+          }
+          </script>
+     </head>
+     <body onload="scroll()">
+        <div class="header">
+            <div class="header_title">ChessBot 1.0</div>
+            <div id="ph"></div>
+        </div>
+        <div id="board">

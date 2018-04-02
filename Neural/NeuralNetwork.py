@@ -6,7 +6,7 @@ import os.path
 tf.logging.set_verbosity(tf.logging.ERROR)
 class NeuralNetwork:
     def __init__(self,hiddenLayersNumber=2,hiddenUnits=500):
-        self.mName='my_model.h5'
+        self.mName='Neural/my_model.h5'
         if(os.path.isfile(self.mName)==True):
             self.model =load_model(self.mName)
         else:

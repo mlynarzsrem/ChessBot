@@ -1,13 +1,12 @@
-from Board import *
-from GradedMove import *
-from NeuralNetwork import *
+from GameEngine.Board import *
+from Extras.GradedMove import *
+from Neural.NeuralNetworkLSTM import *
 import numpy as np
 import datetime
 import math
-import random
-from State import State
+from Extras.State import State
 
-import time
+
 class Game:
     def __init__(self,tm=True):
         self.board = Board()

@@ -75,5 +75,3 @@ In this project I have used following machine learning libraries:
 * Tensorflow
 
 Web serwer was created in Flask.
-
-In this project I use Neural Network to

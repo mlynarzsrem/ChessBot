@@ -46,7 +46,7 @@
         <entry file="file://$PROJECT_DIR$/Game.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="425">
-              <caret line="25" column="64" lean-forward="true" selection-start-line="25" selection-start-column="64" selection-end-line="25" selection-end-column="64" />
+              <caret line="25" column="64" lean-forward="false" selection-start-line="25" selection-start-column="64" selection-end-line="25" selection-end-column="64" />
               <folding>
                 <element signature="e#0#30#0" expanded="true" />
               </folding>
@@ -211,12 +211,13 @@
             <path>
               <item name="ChessBot" type="b2602c69:ProjectViewProjectNode" />
               <item name="ChessBot" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
+              <item name="WebServer" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="ChessBot" type="b2602c69:ProjectViewProjectNode" />
               <item name="ChessBot" type="462c0819:PsiDirectoryNode" />
               <item name="WebServer" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -232,8 +233,8 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\mlyna_000\Documents\Projekty\ChessBot\Extras" />
       <recent name="C:\Users\mlyna_000\Documents\Projekty\ChessBot\WebServer" />
+      <recent name="C:\Users\mlyna_000\Documents\Projekty\ChessBot\Extras" />
       <recent name="C:\Users\mlyna_000\Documents\Projekty\ChessBot\Neural" />
       <recent name="C:\Users\mlyna_000\Documents\Projekty\ChessBot\GameEngine" />
       <recent name="C:\Users\mlyna_000\Documents\Projekty\ChessBot" />
@@ -855,7 +856,7 @@
     <entry file="file://$PROJECT_DIR$/Game.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="425">
-          <caret line="25" column="64" lean-forward="true" selection-start-line="25" selection-start-column="64" selection-end-line="25" selection-end-column="64" />
+          <caret line="25" column="64" lean-forward="false" selection-start-line="25" selection-start-column="64" selection-end-line="25" selection-end-column="64" />
           <folding>
             <element signature="e#0#30#0" expanded="true" />
           </folding>

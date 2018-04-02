@@ -19,7 +19,7 @@ I fix it someday.
 
 ### How it should work?
 
-###### 1. Data's representation
+#### 1. Data's representation
 
 The algorithm is using neural network to evalute state which is result of
 execution of the specific move. State is rated in the range from -1
@@ -37,7 +37,7 @@ possible values of the array are presented below:
 
 **Black piece value / White piece value - Name of the piece**
 
-###### 2. Learning strategy
+#### 2. Learning strategy
 
 **Encountered challenges**
 

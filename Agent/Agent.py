@@ -1,4 +1,4 @@
-from Dbase.dbase import DBase
+from Dbase.DBase import DBase
 import numpy as np
 import json
 import pickle
@@ -13,7 +13,6 @@ class QAgent():
         moves = self.dbase.getMovesInState(state)
         if(len(moves)>0):
             nextMoves=pickle.loads(moves[0][0])
-            print(nextMoves)
         else:
             mCount = len(movelist)
             keys = movelist
@@ -34,11 +33,3 @@ class QAgent():
         nextMoves =pickle.loads(moves)
         nextMoves[move]=min(max(0,nextMoves[move] +reward),1)
         self.dbase.updateMoves(state,pickle.dumps(nextMoves))
-
-
-a =QAgent()
-
-A = np.zeros((8,8))
-moves =[(1,2,3,3),(2,3,4,4),(4,4,3,5)]
-print(a.getNextMove(A,moves,False))
-a.getReward(A,(1,2,3,3),-0.2)

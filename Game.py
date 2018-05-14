@@ -1,6 +1,6 @@
 from GameEngine.Board import *
 from Extras.GradedMove import *
-from Neural.NeuralNetworkLSTM import *
+from Agent.Agent import QAgent
 import numpy as np
 import datetime
 import math
@@ -12,7 +12,7 @@ class Game:
         self.board = Board()
         self.cCPUState, self.cPlState = self.board.getState()
         self.trainigData = []
-        self.neuralNetwork = NeuralNetwork()
+        self.qAgent = QAgent()
         self.trainMode = tm
 
     def updateTrainigDataRanks(self,value):
@@ -27,8 +27,8 @@ class Game:
             self.trainigData.append(newGradedMove)
             if(len(self.trainigData)==5):
                 toTrain = self.trainigData.pop(0)
-                state,mProb =toTrain.getTrainingData()
-                self.neuralNetwork.train(state,[mProb])
+                state,move,reward =toTrain.getTrainingData()
+                self.qAgent.getReward(state,move,reward)
     #Train NN with rest of training examples
     def gameOver(self,CPUwon):
         if(self.trainMode ==True):
@@ -37,24 +37,8 @@ class Game:
             else:
                 self.updateTrainigDataRanks(-100)
             for toTrain in self.trainigData:
-                state,mProb =toTrain.getTrainingData()
-                self.neuralNetwork.train(state,np.array([mProb]))
-
-    #Analyze all moves and choose the best
-    def analyzeMoves(self,moveList):
-        probs = [] #List with rates of each moves
-        states = [] #List of all valid moves
-        for m in moveList:
-            state = self.convertMoveData(m)
-            move = m
-            states.append(State(move,state))
-        for s in states:
-            state =s.getState()
-            probs.append(self.neuralNetwork.getPredition(state))
-        #Find best move
-        x =np.argmax(probs)
-        print(probs)
-        return states[x],probs[x]
+                state,move,reward =toTrain.getTrainingData()
+                self.qAgent.getReward(state,move,reward)
 
     def updateGameLog(self,WHOwon):
         if(self.trainMode ==False):
@@ -74,11 +58,6 @@ class Game:
             text+=' ; '+str(self.cPlState)+' ; '+str(self.cCPUState)+'; '+str(self.board.moveCount)+';\n'
             with open("/home/mlynarzsrem/mysite/logs/GameLog.csv", "a") as myfile2:
                 myfile2.write(text)
-    #Create 1D array to input it into the neural network
-    def convertMoveData(self,move):
-        state =  self.board.getStateAfterMove(move=move,CPU=True)
-        arr = np.asarray(state)
-        return arr
     #Retruns diffrences between prievious and current game state
     def updateGameState(self):
         cpuState, playerState = self.board.getState()
@@ -107,12 +86,13 @@ class Game:
             self.updateTrainigDataRanks(-30)
             return True, 0
         # Get best move and execute it
-        state, prob = self.analyzeMoves(moveList)
-        self.board.doMove(state.getMove(),CPU=True)
+        state = self.board.getIntBoard()
+        move = self.qAgent.getNextMove(state,moveList,self.trainMode)
+        self.board.doMove(move,CPU=True)
         #Updaet game state
         gain, cost = self.updateGameState()
         #Create grade move
-        self.addNewTrainigData(GradedMove(state.getState(),prob,gain))
+        self.addNewTrainigData(GradedMove(state,move))
         if (self.board.isKingChecked(CPU=False) == True):
             self.updateTrainigDataRanks(value=10)
             if(self.board.isLooser(CPU=False)):

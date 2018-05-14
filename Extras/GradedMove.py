@@ -1,13 +1,12 @@
 class GradedMove:
-    def __init__(self,move,mProb,mRank):
+    def __init__(self,state,move):
         self.move=move
-        self.prob=mProb
-        self.rank=mRank
+        self.state=state
+        self.rank=0.0
     def updateRank(self,toAdd):
         self.rank+=toAdd
     def getTrainingData(self):
-        finalProb=self.prob+(float(self.rank)/100)
-        finalProb = min(1,max(-1,finalProb))
-        return self.move,finalProb
+        finalReward =self.rank/float(100)
+        return self.state,self.move,finalReward
     def getRank(self):
         return self.rank

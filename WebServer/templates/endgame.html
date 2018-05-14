@@ -1,12 +1,12 @@
 <!doctype html>
 <html>
      <head>
-          <title>ChessBot 1.0</title>          
+          <title>ChessBot 1.0</title>
           <!-- meta tagi !-->
           <meta charset="UTF-8" />
           <meta name="description" content="Algorytm szachowy oparty na sztucznej inteligencji" />
           <meta name="keywords" content="chessBot, szachy,sztuczna inteligencja, machine learning" />
-          <meta name="author" content="Jakub Młynarz" /> 
+          <meta name="author" content="Jakub Młynarz" />
           <!-- link tagi !-->
           <link rel="stylesheet" href="{{ url_for('static', filename='style/style.css')}}" /> <!-- "{{ url_for('static', filename='style/style.css')}}!-->
           <link href="https://fonts.googleapis.com/css?family=Berkshire+Swash" rel="stylesheet">
@@ -19,7 +19,8 @@
         I hope that you enjoyed the game.
         </span>
         </div>
-        <button type="button" style="margin-bottom: 5px;font-size: 30px;" onclick="window.location='{{ url_for('create_new_game')}}'">Play again!</button>
+        <button type="button" style="margin-bottom: 5px;font-size: 30px;" onclick="window.location='{{ url_for('create_new_game',mode='train')}}'">Play again (Train mode)!</button>
+        <button type="button" style="margin-bottom: 5px;font-size: 30px;" onclick="window.location='{{ url_for('create_new_game',mode='test')}}'">Play again! (Test mode)</button>
         <button type="button" style="margin-top: 5px; font-size: 30px;" onclick="window.location='{{ url_for('start_page')}}'">Return to home site!</button>
      </body>
 </html>

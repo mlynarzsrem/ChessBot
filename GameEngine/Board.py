@@ -110,7 +110,7 @@ class Board:
 
     def isCastling(self,move):
         x0 = move[0];y0 = move[1]; x1 = move[2];y1 = move[3]
-        if(self.board[x0,y0] is not None and abs(self.board[x0,y0].getId())==KingValue):
+        if(x0==x1 and self.board[x0,y0] is not None and abs(self.board[x0,y0].getId())==KingValue):
             if(abs(y0-y1)!=1):
                 #Move king
                 self.board[x1, y1] = copy.copy(self.board[x0, y0])

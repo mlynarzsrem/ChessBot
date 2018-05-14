@@ -125,6 +125,16 @@ class Game:
         self.board.doMove(move, CPU=False)
         cost, gain = self.updateGameState()
         self.addNewTrainigData(GradedMove(state, move, gain),False)
-x = Game()
-x.computerMove()
-x.playerMove()
+    def traingGame(self,nMoves=50):
+        for i in range(nMoves):
+            state,x =self.computerMove()
+            if(state==True):
+                break
+            else:
+                self.playerMove()
+"""
+for i in range(10):
+    x = Game()
+    x.traingGame()
+    """
+

@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>ChessBot 1.0 - Chess game powerd by Artificial Intelligence</title>
+    <title>ChessBot 1.0 - Chess game powered by Artificial Inteligence</title>
 
     <!-- Bootstrap core CSS -->
     <link href="{{ url_for('static', filename='bootstrap/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
@@ -51,10 +51,10 @@
           <div class="col-lg-8 mx-auto text-center">
             <h2 class="section-heading text-white">O projekcie</h2>
             <hr class="light my-4">
-            <p class="text-faded mb-4">ChessBot 1.0 to szachowa gra przeglądarkowa. W odróżnieniu od innych gier tego typu komputer nie podejmuje decyzji o ruchu na 
+            <p class="text-faded mb-4">ChessBot 1.0 to szachowa gra przeglądarkowa. W odróżnieniu od innych gier tego typu komputer nie podejmuje decyzji o ruchu na
             podstawie skomplikowanego algorytmu, ale sieci neuronowej. Sieć neuronowa nie jest uczona jednak na podstawie jakiś danych historycznych, w postaci zapisów
-            z gier rozegranych przez wielkich szachistów. Algorytm uczy się na bieżąco przez analizowanie swoich ruchów z gier z człowiekiem. Jest to o wiele trudniejszy 
-            i mniej precyzyjny sposób uczenia, ponieważ sieć neuronowa uczy się na podstawie gier z graczami, którzy niekoniecznie muszą być dobrymi szachistami. Mam nadzieję, 
+            z gier rozegranych przez wielkich szachistów. Algorytm uczy się na bieżąco przez analizowanie swoich ruchów z gier z człowiekiem. Jest to o wiele trudniejszy
+            i mniej precyzyjny sposób uczenia, ponieważ sieć neuronowa uczy się na podstawie gier z graczami, którzy niekoniecznie muszą być dobrymi szachistami. Mam nadzieję,
             że po rozegraniu odpowiedniej ilości gier, algorytm zacznie robić ruchy lepsze niż losowe, jak to ma miejsce przy nie wytrenowanej sieci. Jest to mój pierwszy
             projekt jeśli chodzi o uczenie maszynowe, jak również pierwsza napisana przez mnie aplikacja webowa. W przypadku zauważenia jakichkolwiek błędów w działaniu
             proszę o kontakt na maila podanego na dole strony.</p>
@@ -88,23 +88,23 @@
         </div>
       </div>
     </section>
- 
-    
+
+
         <section class="bg-primary" id="learning_strategy">
       <div class="container">
         <div class="row">
           <div class="col-lg-8 mx-auto text-center">
             <h2 class="section-heading text-white">Strategia uczenia</h2>
             <hr class="light my-4">
-            <p class="text-faded mb-4">Wybranie odpowiedniej strategii uczenia siecie neuronowej, było kluczową decyzją dla jej przyszłego rozwoju i jednocześnie bardzo problematyczną. Jak już napisałem algorytm uczy się analizując swoje ruchy, czyli monitorując ich wpływ na przebieg gry. Jednak tu pojawia się problem. Jak ocenić czy ruch przyniósł korzyści? Każdy kto chociaż raz grał w szachy z pewnością rozumie, że zbicie figury przeciwnika w swoim ruchu to jeszcze za mało, żeby stwierdzić czy ruch był udany. Co z tego jeśli teraz zbijemy komuś hetmana, jeśli ta decyzja przyczyni się do naszej porażki w którymś z następnych ruchów. Żeby dobrze ocenić nasze posunięcie potrzebna jest znajomość szerszego kontekstu.  <br><br>Zdecydowałem, że w moim algorytmi ocena ruchu będzie dokonywana na podstawie skutków pięciu następnych ruchów wybranych przez algorytm. Po wykonaniu ruchu, zapisywnay jest on do kolejki przechowującej poprzednie ruchy, jego ocena początkowa to wartość zbitej figury 
-            lub zero gdy żadna nie została zbita. Kolejne ruchy wykonane przez komputer i gracza wpływają na ocene końcową tego ruchu, jednak wraz z ilością wykonanych ruchów ten wpływ jest coraz mniejszy. Po wykonaniu czterech następnych ruchów ocena pierwszego ruchu wygenerowana przez sieć jest modyfikowana na podstawie jego oceny końcowej. 
+            <p class="text-faded mb-4">Wybranie odpowiedniej strategii uczenia siecie neuronowej, było kluczową decyzją dla jej przyszłego rozwoju i jednocześnie bardzo problematyczną. Jak już napisałem algorytm uczy się analizując swoje ruchy, czyli monitorując ich wpływ na przebieg gry. Jednak tu pojawia się problem. Jak ocenić czy ruch przyniósł korzyści? Każdy kto chociaż raz grał w szachy z pewnością rozumie, że zbicie figury przeciwnika w swoim ruchu to jeszcze za mało, żeby stwierdzić czy ruch był udany. Co z tego jeśli teraz zbijemy komuś hetmana, jeśli ta decyzja przyczyni się do naszej porażki w którymś z następnych ruchów. Żeby dobrze ocenić nasze posunięcie potrzebna jest znajomość szerszego kontekstu.  <br><br>Zdecydowałem, że w moim algorytmi ocena ruchu będzie dokonywana na podstawie skutków pięciu następnych ruchów wybranych przez algorytm. Po wykonaniu ruchu, zapisywnay jest on do kolejki przechowującej poprzednie ruchy, jego ocena początkowa to wartość zbitej figury
+            lub zero gdy żadna nie została zbita. Kolejne ruchy wykonane przez komputer i gracza wpływają na ocene końcową tego ruchu, jednak wraz z ilością wykonanych ruchów ten wpływ jest coraz mniejszy. Po wykonaniu czterech następnych ruchów ocena pierwszego ruchu wygenerowana przez sieć jest modyfikowana na podstawie jego oceny końcowej.
             Zmodyfikowana ocena jest wykorzystana przy trenowaniu sieci neuronowej.</p>
             <a class="btn btn-light btn-xl js-scroll-trigger" href="#playNow">Zagraj teraz</a>
           </div>
         </div>
       </div>
     </section>
-    
+
       <section id="socials">
       <div class="container">
         <div class="row">
@@ -125,11 +125,12 @@
         </div>
       </div>
     </section>
-    
+
     <section class="bg-dark text-white" id="playNow">
       <div class="container text-center">
         <h2 class="mb-4">Zmierz się w grze szachowej ze sztuczną inteligencją!</h2>
-        <a class="btn btn-light btn-xl sr-button" href="{{ url_for('create_new_game')}}">Zagraj teraz!</a>
+        <a class="btn btn-light btn-xl sr-button" href="{{ url_for('create_new_game',mode='train')}}">Ucz sieć!</a>
+        <a class="btn btn-light btn-xl sr-button" href="{{ url_for('create_new_game',mode='test')}}">Testuj!</a>
       </div>
     </section>
 

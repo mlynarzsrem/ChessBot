@@ -4,6 +4,8 @@ from WebServer.View import View
 from WebServer.ServerValidation import *
 import uuid
 app = Flask(__name__)
+app.secret_key = 'super secret key'
+app.config['SESSION_TYPE'] = 'filesystem'
 Games = {}
 v = View()
 
@@ -22,11 +24,15 @@ def getGame():
         return None
     return game
 
-@app.route('/newgame')
-def create_new_game():
+@app.route('/newgame/<mode>')
+def create_new_game(mode):
+    endGame()
     if 'game' not in session:
         session['game'] = uuid.uuid4()
-        Games[session['game']] = Game()
+        if(mode=='train'):
+            Games[session['game']] = Game()
+        else:
+            Games[session['game']] = Game(False)
     game =getGame()
     if(game is None):
         return redirect('/newgame')
@@ -59,8 +65,8 @@ def makeGameIteration(game,moveFull):
         return None,0
     game.board.doMove(moveFull, False)
     endgame, state = game.computerMove()
-    print(game.board.getIntBoard())
-    print('---------------------------')
+    #print(game.board.getIntBoard())
+    #print('---------------------------')
     return endgame,state
 
 @app.route('/makemove/<move>')
@@ -83,9 +89,9 @@ def make_Move(move):
         if(state==0):
             return render_template('endgame.html', state='You draw!')
         if (state == 1):
-            return render_template('endgame.html', state='You won!')
-        if (state == -1):
             return render_template('endgame.html', state='You lost!')
+        if (state == -1):
+            return render_template('endgame.html', state='You won!')
 
     v = View()
     return render_template_string(v.getCurrentBoard(game.board.getIntBoard()))
@@ -96,8 +102,4 @@ def giveUp():
 
 
 if __name__ == '__main__':
-    app.debug = True
-    app.secret_key = 'super secret key'
-    app.config['SESSION_TYPE'] = 'filesystem'
-    app.run(port=8000)
-
+    app.run()

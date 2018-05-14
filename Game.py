@@ -92,7 +92,7 @@ class Game:
         #Updaet game state
         gain, cost = self.updateGameState()
         #Create grade move
-        self.addNewTrainigData(GradedMove(state,move))
+        self.addNewTrainigData(GradedMove(state,move,gain))
         if (self.board.isKingChecked(CPU=False) == True):
             self.updateTrainigDataRanks(value=10)
             if(self.board.isLooser(CPU=False)):

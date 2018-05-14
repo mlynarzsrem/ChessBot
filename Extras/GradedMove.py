@@ -1,8 +1,8 @@
 class GradedMove:
-    def __init__(self,state,move):
+    def __init__(self,state,move,initialRank):
         self.move=move
         self.state=state
-        self.rank=0.0
+        self.rank=initialRank
     def updateRank(self,toAdd):
         self.rank+=toAdd
     def getTrainingData(self):

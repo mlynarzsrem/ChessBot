@@ -4,6 +4,7 @@ import json
 import pickle
 import random
 import operator
+from numpy.random import choice
 class QAgent():
     def __init__(self):
         self.dbase  = DBase("qlearn2")
@@ -31,8 +32,11 @@ class QAgent():
     def chooseMove(self,movelist,allNextMoves,trainMode):
         nextMoves = {m: allNextMoves[m] for m in movelist}
         if (trainMode == True):
-            x = random.randint(0,len(nextMoves.keys()) -1 )
-            return list(nextMoves.keys())[x]
+            nextMovesList = list(nextMoves.keys())
+            probs = np.array(list(nextMoves.values()))*100
+            probs = probs/float(sum(probs))
+            draw = choice(nextMovesList, 1, p=probs)
+            return draw[0]
         else:
             return max(nextMoves.items(), key=operator.itemgetter(1))[0]
     def getNextMove(self,state,movelist,trainMode =True):

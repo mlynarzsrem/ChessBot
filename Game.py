@@ -37,7 +37,7 @@ class Game:
             if(len(self.trainigData)==5):
                 toTrain = trainigData.pop(0)
                 state,move,reward =toTrain.getTrainingData()
-                self.qAgent.getReward(state,move,reward)
+                self.qAgent.getReward(state,move,reward,nextState=trainigData[0].state)
     #Train NN with rest of training examples
     def gameOver(self,CPUwon):
         if(self.trainMode ==True):
@@ -132,9 +132,9 @@ class Game:
                 break
             else:
                 self.playerMove()
-"""
-for i in range(10):
+
+for i in range(3):
     x = Game()
     x.traingGame()
-    """
+
 

@@ -4,7 +4,7 @@ from sqlite3 import Error
 class DBase():
     def createConnection(self,agent_name):
         try:
-            self.conn =sqlite3.connect(agent_name+".db")
+            self.conn =sqlite3.connect("Dbase/"+agent_name+".db")
         except Error as e:
             print(e)
     def createTables(self):

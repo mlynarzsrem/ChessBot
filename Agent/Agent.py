@@ -8,6 +8,8 @@ from numpy.random import choice
 class QAgent():
     def __init__(self):
         self.dbase  = DBase("qlearn2")
+        self.alpha =0.9
+        self.gamma =0.07
 
     def validateNextMoves(self,state,movelist,nextMoves):
         dirty = False
@@ -35,8 +37,8 @@ class QAgent():
             nextMovesList = list(nextMoves.keys())
             probs = np.array(list(nextMoves.values()))*100
             probs = probs/float(sum(probs))
-            draw = choice(nextMovesList, 1, p=probs)
-            return draw[0]
+            draw = choice(len(nextMovesList), 1, p=probs)
+            return nextMovesList[draw[0]]
         else:
             return max(nextMoves.items(), key=operator.itemgetter(1))[0]
     def getNextMove(self,state,movelist,trainMode =True):
@@ -48,9 +50,19 @@ class QAgent():
         else:
             nextMoves = self.addNewState(state,movelist)
         return self.chooseMove(movelist,nextMoves,trainMode)
-    def getReward(self,state,move,reward):
+    def getBestValueInState(self,state):
+        state = state.flatten().tostring()
+        moves = self.dbase.getMovesInState(state)
+        nextMoves=pickle.loads(moves[0][0])
+        values =list(nextMoves.values())
+        return max(values)
+    def getReward(self,state,move,reward,nextState = None):
         state = state.flatten().tostring()
         moves = self.dbase.getMovesInState(state)[0][0]
         nextMoves =pickle.loads(moves)
-        nextMoves[move]=min(max(0,nextMoves[move] +reward),1)
+        nsReward =0
+        if(nextState is not None):
+            nsReward =(self.getBestValueInState(nextState) - nextMoves[move])
+        finalReward = self.alpha*(reward + self.gamma*nsReward)
+        nextMoves[move]=min(max(0,nextMoves[move] +finalReward),1)
         self.dbase.updateMoves(state,pickle.dumps(nextMoves))

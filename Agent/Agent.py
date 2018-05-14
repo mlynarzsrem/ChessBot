@@ -27,6 +27,7 @@ class QAgent():
             values.append(p)
         nextMoves = dict(zip(keys, values))
         self.dbase.insertMoves(state, pickle.dumps(nextMoves))
+        return nextMoves
     def chooseMove(self,movelist,allNextMoves,trainMode):
         nextMoves = {m: allNextMoves[m] for m in movelist}
         if (trainMode == True):
@@ -41,7 +42,7 @@ class QAgent():
             nextMoves=pickle.loads(moves[0][0])
             nextMoves = self.validateNextMoves(state,movelist,nextMoves)
         else:
-            self.addNewState(state,movelist)
+            nextMoves = self.addNewState(state,movelist)
         return self.chooseMove(movelist,nextMoves,trainMode)
     def getReward(self,state,move,reward):
         state = state.flatten().tostring()

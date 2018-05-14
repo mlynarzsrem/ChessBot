@@ -12,21 +12,30 @@ class Game:
         self.board = Board()
         self.cCPUState, self.cPlState = self.board.getState()
         self.trainigData = []
+        self.trainigDataNCPU = []
         self.qAgent = QAgent()
         self.trainMode = tm
 
-    def updateTrainigDataRanks(self,value):
-        n = len(self.trainigData)
-        for i in range(len(self.trainigData)):
-            self.trainigData[i].updateRank(float(value)/math.sqrt(n))
+    def updateTrainigDataRanks(self,value,CPU =True):
+        if(CPU==True):
+            trainigData =self.trainigData
+        else:
+            trainigData = self.trainigDataNCPU
+        n = len(trainigData)
+        for i in range(len(trainigData)):
+            trainigData[i].updateRank(float(value)/math.sqrt(n))
             n-=1
 
-    def addNewTrainigData(self,newGradedMove):
+    def addNewTrainigData(self,newGradedMove,CPU =True):
+        if(CPU==True):
+            trainigData =self.trainigData
+        else:
+            trainigData = self.trainigDataNCPU
         if(self.trainMode ==True):
             self.updateTrainigDataRanks(newGradedMove.getRank())
-            self.trainigData.append(newGradedMove)
+            trainigData.append(newGradedMove)
             if(len(self.trainigData)==5):
-                toTrain = self.trainigData.pop(0)
+                toTrain = trainigData.pop(0)
                 state,move,reward =toTrain.getTrainingData()
                 self.qAgent.getReward(state,move,reward)
     #Train NN with rest of training examples
@@ -34,9 +43,14 @@ class Game:
         if(self.trainMode ==True):
             if(CPUwon==True):
                 self.updateTrainigDataRanks(100)
+                self.updateTrainigDataRanks(-100,False)
             else:
                 self.updateTrainigDataRanks(-100)
+                self.updateTrainigDataRanks(100, False)
             for toTrain in self.trainigData:
+                state,move,reward =toTrain.getTrainingData()
+                self.qAgent.getReward(state,move,reward)
+            for toTrain in self.trainigDataNCPU:
                 state,move,reward =toTrain.getTrainingData()
                 self.qAgent.getReward(state,move,reward)
 
@@ -79,11 +93,13 @@ class Game:
         moveList = self.board.getValidCheckStateMoves(CPU=True)
         if(self.board.isKingChecked(CPU=True)==True):
             self.updateTrainigDataRanks(value=-10)
+            self.updateTrainigDataRanks(value=10,CPU=False)
             if(len(moveList)==0):
                 self.gameOver(CPUwon=False)
                 return True,-1
         if (len(moveList) == 0):
             self.updateTrainigDataRanks(-30)
+            self.updateTrainigDataRanks(-30,False)
             return True, 0
         # Get best move and execute it
         state = self.board.getIntBoard()
@@ -95,9 +111,20 @@ class Game:
         self.addNewTrainigData(GradedMove(state,move,gain))
         if (self.board.isKingChecked(CPU=False) == True):
             self.updateTrainigDataRanks(value=10)
+            self.updateTrainigDataRanks(value=-10, CPU=False)
             if(self.board.isLooser(CPU=False)):
                 self.gameOver(CPUwon=True)
                 return True ,1
         return False ,0
+    def playerMove(self):
+        cost, gain = self.updateGameState()
+        self.updateTrainigDataRanks(cost,False)
+        moveList = self.board.getValidCheckStateMoves(CPU=False)
+        state = self.board.getIntBoard()
+        move = self.qAgent.getNextMove(state, moveList, self.trainMode)
+        self.board.doMove(move, CPU=False)
+        cost, gain = self.updateGameState()
+        self.addNewTrainigData(GradedMove(state, move, gain),False)
 x = Game()
 x.computerMove()
+x.playerMove()

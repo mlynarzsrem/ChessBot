@@ -32,7 +32,7 @@ class QAgent():
             return max(nextMoves.items(), key=operator.itemgetter(1))[0]
     def getNextMove(self,state,movelist,trainMode =True,CPU=True):
         #Prepare the state before searching
-        state = state.flatten().tostring()+str(CPU)
+        state = state.flatten().tostring()+bytes(CPU)
         #Search state in the database
         moves = self.dbase.getMovesInState(state)
         if(len(moves)>0):
@@ -44,7 +44,7 @@ class QAgent():
     def getNextStateReward(self,state,curReward,CPU=True):
         if(state is not None):
             # Prepare the state before searching
-            state = state.flatten().tostring()+str(CPU)
+            state = state.flatten().tostring()+bytes(CPU)
             ##Search state in the database
             moves = self.dbase.getMovesInState(state)
             if(len(moves)!=0):
@@ -54,7 +54,7 @@ class QAgent():
         return 0
     def getReward(self,state,move,reward,nextState = None,CPU=True):
         # Prepare the state before searching
-        state = state.flatten().tostring()+str(CPU)
+        state = state.flatten().tostring()+bytes(CPU)
         #Get possible moves in this state
         moves = self.dbase.getMovesInState(state)[0][0]
         nextMoves =pickle.loads(moves)

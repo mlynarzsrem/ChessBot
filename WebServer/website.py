@@ -8,7 +8,7 @@ app.secret_key = 'super secret key'
 app.config['SESSION_TYPE'] = 'filesystem'
 Games = {}
 v = View()
-
+dBaseloc ="F:\Projekty\chessbot2\ChessBot\Dbase\qlearn2.db"
 
 @app.route('/')
 def start_page():
@@ -30,9 +30,9 @@ def create_new_game(mode):
     if 'game' not in session:
         session['game'] = uuid.uuid4()
         if(mode=='train'):
-            Games[session['game']] = Game()
+            Games[session['game']] = Game(dbaseLoc=dBaseloc)
         else:
-            Games[session['game']] = Game(False)
+            Games[session['game']] = Game(False,dbaseLoc=dBaseloc)
     game =getGame()
     if(game is None):
         return redirect('/newgame')

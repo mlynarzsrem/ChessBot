@@ -2,7 +2,6 @@ from GameEngine.Pieces import *
 import numpy as np
 import copy
 
-
 class Board:
     def __init__(self):
         self.board=np.empty(shape=(8,8),dtype=object)

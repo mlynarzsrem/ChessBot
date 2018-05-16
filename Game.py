@@ -6,12 +6,12 @@ import datetime
 import math
 from Extras.State import State
 class Game:
-    def __init__(self,tm=True):
+    def __init__(self,tm=True,dbaseLoc = "Dbase/qlearn2.db"):
         self.board = Board()
         self.cCPUState, self.cPlState = self.board.getState()
         self.trainigData = []
         self.trainigDataNCPU = []
-        self.qAgent = QAgent()
+        self.qAgent = QAgent(dbaseLoc)
         self.trainMode = tm
 
     def updateTrainigDataRanks(self,value,CPU =True):

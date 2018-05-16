@@ -2,9 +2,9 @@ import sqlite3
 from sqlite3 import Error
 
 class DBase():
-    def createConnection(self,agent_name):
+    def createConnection(self,dbaseLoc):
         try:
-            self.conn =sqlite3.connect("F:\Projekty\chessbot2\ChessBot\Dbase\\"+agent_name+".db")
+            self.conn =sqlite3.connect(dbaseLoc)
             self.conn.isolation_level =None
         except Error as e:
             print(e)
@@ -33,6 +33,6 @@ class DBase():
         c.execute("update moves set nextmoves =? where state=?",(nextmoves,state,))
         c.execute("VACUUM")
         self.conn.commit()
-    def __init__(self,agent_name):
-        self.createConnection(agent_name)
+    def __init__(self,dbaseLoc="qlearn2.db"):
+        self.createConnection(dbaseLoc)
         self.createTables()

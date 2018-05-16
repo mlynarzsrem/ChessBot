@@ -1,13 +1,12 @@
 from Dbase.DBase import DBase
 import numpy as np
-import json
 import pickle
 import random
 import operator
 from numpy.random import choice
 class QAgent():
-    def __init__(self):
-        self.dbase  = DBase("qlearn2")
+    def __init__(self,dbaseLoc):
+        self.dbase  = DBase(dbaseLoc)
         self.alpha =0.9
         self.gamma =0.1
 

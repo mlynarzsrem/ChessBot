@@ -5,8 +5,6 @@ import numpy as np
 import datetime
 import math
 from Extras.State import State
-
-
 class Game:
     def __init__(self,tm=True):
         self.board = Board()
@@ -37,7 +35,7 @@ class Game:
             if(len(self.trainigData)==5):
                 toTrain = trainigData.pop(0)
                 state,move,reward =toTrain.getTrainingData()
-                self.qAgent.getReward(state,move,reward,nextState=trainigData[0].state)
+                self.qAgent.getReward(state,move,reward,nextState=toTrain.stateAfter,CPU=CPU)
     #Train NN with rest of training examples
     def gameOver(self,CPUwon):
         if(self.trainMode ==True):
@@ -52,7 +50,7 @@ class Game:
                 self.qAgent.getReward(state,move,reward)
             for toTrain in self.trainigDataNCPU:
                 state,move,reward =toTrain.getTrainingData()
-                self.qAgent.getReward(state,move,reward)
+                self.qAgent.getReward(state,move,reward,CPU=False)
 
     def updateGameLog(self,WHOwon):
         if(self.trainMode ==False):
@@ -105,10 +103,11 @@ class Game:
         state = self.board.getIntBoard()
         move = self.qAgent.getNextMove(state,moveList,self.trainMode)
         self.board.doMove(move,CPU=True)
+        stateAfter = self.board.getIntBoard()
         #Updaet game state
         gain, cost = self.updateGameState()
         #Create grade move
-        self.addNewTrainigData(GradedMove(state,move,gain))
+        self.addNewTrainigData(GradedMove(state,move,gain,stateAfter=stateAfter))
         if (self.board.isKingChecked(CPU=False) == True):
             self.updateTrainigDataRanks(value=10)
             self.updateTrainigDataRanks(value=-10, CPU=False)
@@ -121,10 +120,11 @@ class Game:
         self.updateTrainigDataRanks(cost,False)
         moveList = self.board.getValidCheckStateMoves(CPU=False)
         state = self.board.getIntBoard()
-        move = self.qAgent.getNextMove(state, moveList, self.trainMode)
+        move = self.qAgent.getNextMove(state, moveList, self.trainMode,CPU=False)
         self.board.doMove(move, CPU=False)
+        stateAfter = self.board.getIntBoard()
         cost, gain = self.updateGameState()
-        self.addNewTrainigData(GradedMove(state, move, gain),False)
+        self.addNewTrainigData(GradedMove(state, move, gain,stateAfter=stateAfter),False)
     def traingGame(self,nMoves=50):
         for i in range(nMoves):
             state,x =self.computerMove()
@@ -132,9 +132,4 @@ class Game:
                 break
             else:
                 self.playerMove()
-
-for i in range(3):
-    x = Game()
-    x.traingGame()
-
 

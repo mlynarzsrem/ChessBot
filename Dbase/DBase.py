@@ -4,7 +4,8 @@ from sqlite3 import Error
 class DBase():
     def createConnection(self,agent_name):
         try:
-            self.conn =sqlite3.connect("Dbase/"+agent_name+".db")
+            self.conn =sqlite3.connect("F:\Projekty\chessbot2\ChessBot\Dbase\\"+agent_name+".db")
+            self.conn.isolation_level =None
         except Error as e:
             print(e)
     def createTables(self):
@@ -25,10 +26,12 @@ class DBase():
     def insertMoves(self,state,nextmoves):
         c =self.conn.cursor()
         c.execute("insert into moves VALUES (?,?)",(state,nextmoves,))
+        c.execute("VACUUM")
         self.conn.commit()
     def updateMoves(self,state,nextmoves):
         c =self.conn.cursor()
         c.execute("update moves set nextmoves =? where state=?",(nextmoves,state,))
+        c.execute("VACUUM")
         self.conn.commit()
     def __init__(self,agent_name):
         self.createConnection(agent_name)

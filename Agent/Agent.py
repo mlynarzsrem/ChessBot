@@ -39,7 +39,7 @@ class QAgent():
             nextMoves=pickle.loads(moves[0][0])
         else:
             nextMoves = self.addNewState(state,movelist)
-        return self.chooseMove(movelist,nextMoves,trainMode)
+        return self.chooseMove(nextMoves,trainMode)
     #Get value of best move in state
     def getNextStateReward(self,state,curReward,CPU=True):
         if(state is not None):
